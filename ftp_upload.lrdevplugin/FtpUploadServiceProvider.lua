@@ -39,7 +39,7 @@ return {
 	},
 
 	startDialog = FtpUploadExportDialogSections.startDialog,
-	sectionsForBottomOfDialog = FtpUploadExportDialogSections.sectionsForBottomOfDialog,
+	sectionsForTopOfDialog = FtpUploadExportDialogSections.sectionsForTopOfDialog,
 	
 	processRenderedPhotos = FtpUploadTask.processRenderedPhotos,
 	

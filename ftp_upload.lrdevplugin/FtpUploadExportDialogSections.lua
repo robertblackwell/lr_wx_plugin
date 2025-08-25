@@ -29,7 +29,7 @@ FtpUploadExportDialogSections = {}
 local function updateExportStatus( propertyTable )
 	
 	local message = nil
-	
+	FtpUtils.messsage("updateExportStatus")
 	repeat
 		-- Use a repeat loop to allow easy way to "break" out.
 		-- (It only goes through once.)
@@ -71,7 +71,7 @@ end
 -------------------------------------------------------------------------------
 
 function FtpUploadExportDialogSections.startDialog( propertyTable )
-	
+	FtpUtils.message("start Dialog")
 	propertyTable:addObserver( 'items', updateExportStatus )
 	propertyTable:addObserver( 'path', updateExportStatus )
 	propertyTable:addObserver( 'putInSubfolder', updateExportStatus )
@@ -83,7 +83,7 @@ end
 
 -------------------------------------------------------------------------------
 
-function FtpUploadExportDialogSections.sectionsForBottomOfDialog( _, propertyTable )
+function FtpUploadExportDialogSections.sectionsForTopOfDialog( _, propertyTable )
 
 	local f = LrView.osFactory()
 	local bind = LrView.bind
