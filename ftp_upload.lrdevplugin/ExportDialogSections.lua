@@ -51,6 +51,17 @@ end
 
 function ExportDialogSections.startDialog( propertyTable )
 	PrintUtils.message('startDialog')
+
+	propertyTable:addObserver( 'WX_exportPrefix', updateExportStatus )
+	propertyTable:addObserver( 'WX_exportFolder', updateExportStatus )
+	propertyTable:addObserver( 'WX_synopsis', updateExportStatus )
+	propertyTable:addObserver( 'WX_albumType', updateExportStatus )
+	propertyTable:addObserver( 'WX_imageType', updateExportStatus )
+	propertyTable:addObserver( 'WX_slug', updateExportStatus )
+	propertyTable:addObserver( 'WX_journal_album_name', updateExportStatus )
+
+
+	-- below here are hangovers from the ftp plugin that was modified to get the whiteacorn plugin
 	propertyTable:addObserver( 'items', updateExportStatus )
 	propertyTable:addObserver( 'path', updateExportStatus )
 	propertyTable:addObserver( 'putInSubfolder', updateExportStatus )
