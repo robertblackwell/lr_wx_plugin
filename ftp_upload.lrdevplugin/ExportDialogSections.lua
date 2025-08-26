@@ -177,3 +177,5 @@ function ExportDialogSections.sectionsForTopOfDialog( _, propertyTable )
 	return result
 	
 end
+
+return ExportDialogSections

@@ -63,3 +63,5 @@ function ExportTask.processRenderedPhotos( functionContext, exportContext )
 	end
 	
 end
+
+return ExportTask
