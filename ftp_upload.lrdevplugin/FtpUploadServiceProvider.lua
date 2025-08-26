@@ -25,19 +25,21 @@ require "FtpUploadTask"
 
 return {
 	
-	hideSections = { 'exportLocation' },
+	hideSections = { 'video', 'exportLocation', 'fileSettings', 'watermarking', 'metadata', 'outputSharpening', 'fileNaming', "imageSettings" },
 
-	allowFileFormats = nil, -- nil equates to all available formats
-	
-	allowColorSpaces = nil, -- nil equates to all color spaces
+	allowFileFormats = {'JPEG'}, -- nil equates to all available formats
+	canExportVideo = false,
+	allowColorSpaces = {'AdobeRGB'}, -- nil equates to all color spaces
 
 	exportPresetFields = {
+		{ key = 'WX_exportPrefix', default = '/Users/robertblackwell/LrPlugins/TestExports' },
+		{ key = 'WX_exportFolder', default = 'photos2'},
 		{ key = 'putInSubfolder', default = false },
 		{ key = 'path', default = 'photos' },
 		{ key = "ftpPreset", default = nil },
 		{ key = "fullPath", default = nil },
 	},
-
+	updateExportSettings = FtpUploadExportDialogSections.updateExportSettings,
 	startDialog = FtpUploadExportDialogSections.startDialog,
 	sectionsForTopOfDialog = FtpUploadExportDialogSections.sectionsForTopOfDialog,
 	

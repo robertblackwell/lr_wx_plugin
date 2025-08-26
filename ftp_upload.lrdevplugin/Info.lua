@@ -24,10 +24,10 @@ return {
 
 	LrToolkitIdentifier = 'com.adobe.lightroom.export.ftp_upload',
 
-	LrPluginName = "Whiteacorn Album Export",
+	LrPluginName = LOC "$$$/FTPUpload/PluginName=FTP Upload Sample",
 	
 	LrExportServiceProvider = {
-		title = "Photo Album Export",
+		title = "FTP Upload",
 		file = 'FtpUploadServiceProvider.lua',
 	},
 

@@ -15,15 +15,13 @@ this file from a source other than Adobe, then your use, modification, or distri
 of it requires the prior written permission of Adobe.
 
 ------------------------------------------------------------------------------]]
-
+require "FtpUtils"
 -- Lightroom API
 local LrPathUtils = import 'LrPathUtils'
 local LrFtp = import 'LrFtp'
 local LrFileUtils = import 'LrFileUtils'
 local LrErrors = import 'LrErrors'
 local LrDialogs = import 'LrDialogs'
-
-require "FtpUtils"
 
 --============================================================================--
 
@@ -38,7 +36,7 @@ function FtpUploadTask.processRenderedPhotos( functionContext, exportContext )
 	local exportSession = exportContext.exportSession
 	local exportParams = exportContext.propertyTable
 	local ftpPreset = exportParams.ftpPreset
-	
+	FtpUtils.dumpTable(exportParams, 4)
 	-- Set progress title.
 
 	local nPhotos = exportSession:countRenditions()
@@ -48,100 +46,28 @@ function FtpUploadTask.processRenderedPhotos( functionContext, exportContext )
 							   and LOC( "$$$/FtpUpload/Upload/Progress=Uploading ^1 photos via Ftp", nPhotos )
 							   or LOC "$$$/FtpUpload/Upload/Progress/One=Uploading one photo via Ftp",
 					}
-
-	-- -- Create an FTP connection.
-	
-	-- if not LrFtp.queryForPasswordIfNeeded( ftpPreset ) then
-	-- 	return
-	-- end
-	
-	-- local ftpInstance = LrFtp.create( ftpPreset, true )
-	
-	-- if not ftpInstance then
-	
-	-- 	-- This really shouldn't ever happen.
-		
-	-- 	LrErrors.throwUserError( LOC "$$$/FtpUpload/Upload/Errors/InvalidFtpParameters=The specified FTP preset is incomplete and cannot be used." )
-	-- end
-	
-	-- -- Ensure target directory exists.
-	
-	-- local index = 0
-	-- while true do
-		
-	-- 	local subPath = string.sub( exportParams.fullPath, 0, index )
-	-- 	ftpInstance.path = subPath
-		
-	-- 	local exists = ftpInstance:exists( '' )
-		
-	-- 	if exists == false then
-	-- 		local success = ftpInstance:makeDirectory( '' )
-			
-	-- 		if not success then
-			
-	-- 			-- This is a possible situation if permissions don't allow us to create directories.
-				
-	-- 			LrErrors.throwUserError( LOC "$$$/FtpUpload/Upload/Errors/CannotMakeDirectoryForUpload=Cannot upload because Lightroom could not create the destination directory." )
-	-- 		end
-			
-	-- 	elseif exists == 'file' then
-		
-	-- 		-- Unlikely, due to the ambiguous way paths for directories get tossed around.
-			
-	-- 		LrErrors.throwUserError( LOC "$$$/FtpUpload/Upload/Errors/UploadDestinationIsAFile=Cannot upload to a destination that already exists as a file." )
-	-- 	elseif exists == 'directory' then
-		
-	-- 		-- Excellent, it exists, do nothing here.
-			
-	-- 	else
-		
-	-- 		-- Not sure if this would every really happen.
-			
-	-- 		LrErrors.throwUserError( LOC "$$$/FtpUpload/Upload/Errors/CannotCheckForDestination=Unable to upload because Lightroom cannot ascertain if the target destination exists." )
-	-- 	end
-		
-	-- 	if index == nil then
-	-- 		break
-	-- 	end
-		
-	-- 	index = string.find( exportParams.fullPath, "/", index + 1 )
-		
-	-- end
-
-	-- ftpInstance.path = exportParams.fullPath
-	
-	-- Iterate through photo renditions.
 	
 	local failures = {}
-
+	local destParentPath = LrPathUtils.child(exportParams.WX_exportPrefix, exportParams.WX_exportFolder)
+	if not LrFileUtils.exists(destParentPath) then
+		LrFileUtils.createAllDirectories(destParentPath)
+	end
+	FtpUtils.message("destParentPath : " .. destParentPath)
 	for _, rendition in exportContext:renditions{ stopIfCanceled = true } do
-	
-		-- Wait for next photo to render.
-
 		local success, pathOrMessage = rendition:waitForRender()
-		
-		-- Check for cancellation again after photo has been rendered.
-		
 		if progressScope:isCanceled() then break end
-		
 		if success then
-
 			local filename = LrPathUtils.leafName( pathOrMessage )
-			
-			-- local success = ftpInstance:putFile( pathOrMessage, filename )
-			FtpUtils.message("Render loop " .. filename)
+			FtpUtils.message("in render loop filename: " .. filename .. " path: " .. pathOrMessage)
 			if not success then
-			
-				-- If we can't upload that file, log it.  For example, maybe user has exceeded disk
-				-- quota, or the file already exists and we don't have permission to overwrite, or
-				-- we don't have permission to write to that directory, etc....
-				
 				table.insert( failures, filename )
 			end
-					
-			-- When done with photo, delete temp file. There is a cleanup step that happens later,
-			-- but this will help manage space in the event of a large upload.
-			
+			local dest = LrPathUtils.child(destParentPath, filename)
+			if LrFileUtils.exists(dest) then 
+				FtpUtils.message("dest file " .. dest .. " already exists. Overwriting")
+			end
+			LrFileUtils.copy(pathOrMessage, dest)
+			FtpUtils.message("copy " .. pathOrMessage .. "  -->  " .. dest )
 			LrFileUtils.delete( pathOrMessage )
 					
 		end
