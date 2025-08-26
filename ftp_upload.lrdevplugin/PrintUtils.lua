@@ -3,14 +3,14 @@ local logger = LrLogger('FtpExportPlugin') -- Replace 'YourPluginName' with your
 logger:enable("logfile") -- or "print" for console output
 
 ---------------------------------------------------------------------------------
-FtpUtils = {}
-function FtpUtils.init()
+PrintUtils = {}
+function PrintUtils.init()
 
 end
-function FtpUtils.message(msg)
+function PrintUtils.message(msg)
     logger:info(msg)
 end
-function FtpUtils.dumpTable(tbl, indent)
+function PrintUtils.dumpTable(tbl, indent)
     indent = indent or 0
     local indentStr = string.rep("  ", indent)
     logger:info(indentStr .. "{")
@@ -20,7 +20,7 @@ function FtpUtils.dumpTable(tbl, indent)
         local valueStr
         if type(v) == "table" then
             logger:info(indentStr .. "  " .. keyStr .. " = ")
-            FtpUtils.dumpTable(v, indent + 1) -- Recursive call for nested tables
+            PrintUtils.dumpTable(v, indent + 1) -- Recursive call for nested tables
         else
             valueStr = tostring(v)
             logger:info(indentStr .. "  " .. keyStr .. " = " .. valueStr .. ",")
@@ -28,4 +28,4 @@ function FtpUtils.dumpTable(tbl, indent)
     end
     logger:info(indentStr .. "}")
 end
-return FtpUtils
+return PrintUtils

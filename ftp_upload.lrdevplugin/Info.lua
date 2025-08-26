@@ -28,7 +28,7 @@ return {
 	
 	LrExportServiceProvider = {
 		title = "FTP Upload",
-		file = 'FtpUploadServiceProvider.lua',
+		file = 'ExportServiceProvider.lua',
 	},
 
 	VERSION = { major=14, minor=3, revision=0, build="202504141032-10373aad", },

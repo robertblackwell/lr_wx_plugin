@@ -1,30 +1,9 @@
---[[----------------------------------------------------------------------------
 
-FtpUploadExportDialogSections.lua
-Export dialog customization for Lightroom FTP uploader
-
---------------------------------------------------------------------------------
-
-ADOBE SYSTEMS INCORPORATED
- Copyright 2007 Adobe Systems Incorporated
- All Rights Reserved.
-
-NOTICE: Adobe permits you to use, modify, and distribute this file in accordance
-with the terms of the Adobe license agreement accompanying it. If you have received
-this file from a source other than Adobe, then your use, modification, or distribution
-of it requires the prior written permission of Adobe.
-
-------------------------------------------------------------------------------]]
-
--- Lightroom SDK
 local LrView = import 'LrView'
 local LrFtp = import 'LrFtp'
 
---============================================================================--
 
-FtpUploadExportDialogSections = {}
-
--------------------------------------------------------------------------------
+ExportDialogSections = {}
 
 local function updateExportStatus( propertyTable )
 	
@@ -70,8 +49,8 @@ end
 
 -------------------------------------------------------------------------------
 
-function FtpUploadExportDialogSections.startDialog( propertyTable )
-	FtpUtils.message('startDialog')
+function ExportDialogSections.startDialog( propertyTable )
+	PrintUtils.message('startDialog')
 	propertyTable:addObserver( 'items', updateExportStatus )
 	propertyTable:addObserver( 'path', updateExportStatus )
 	propertyTable:addObserver( 'putInSubfolder', updateExportStatus )
@@ -80,8 +59,8 @@ function FtpUploadExportDialogSections.startDialog( propertyTable )
 	updateExportStatus( propertyTable )
 	
 end
-function FtpUploadExportDialogSections.updateExportSettings(propertyTable)
-	FtpUtils.message('updateExportSettings')
+function ExportDialogSections.updateExportSettings(propertyTable)
+	PrintUtils.message('updateExportSettings')
 	propertyTable.LR_export_colorSpace = "AdobeRGB"
 	propertyTable.LR_jpeg_quality = 0.90
 	propertyTable.LR_format = "JPEG"
@@ -114,7 +93,7 @@ function FtpUploadExportDialogSections.updateExportSettings(propertyTable)
 end
 -------------------------------------------------------------------------------
 
-function FtpUploadExportDialogSections.sectionsForTopOfDialog( _, propertyTable )
+function ExportDialogSections.sectionsForTopOfDialog( _, propertyTable )
 
 	local f = LrView.osFactory()
 	local bind = LrView.bind
