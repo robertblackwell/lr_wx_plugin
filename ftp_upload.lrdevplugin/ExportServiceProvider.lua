@@ -1,5 +1,6 @@
 require "ExportDialogSections"
 require "ExportTask"
+require "UpdateLrExportSettings"
 
 return {
 	
@@ -20,7 +21,7 @@ return {
 	},
 	startDialog = ExportDialogSections.startDialog,
 	sectionsForTopOfDialog = ExportDialogSections.sectionsForTopOfDialog,
-	updateExportSettings = ExportDialogSections.updateExportSettings,
+	updateExportSettings = UpdateLrExportSettings.update,
 	processRenderedPhotos = ExportTask.processRenderedPhotos,
 	
 }
