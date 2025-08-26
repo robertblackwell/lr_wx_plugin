@@ -1,9 +1,40 @@
 
+require 'Constants'
+
 local LrView = import 'LrView'
 local LrFtp = import 'LrFtp'
 
+local function isEmpty(value) 
+	return (value == nil or value == "")
+end
+local function notEmpty(value)
+	return (value ~= "" and value ~= nil)
+end
+
+local function validImageAndAlbumTypes(imageType, albumType)
+end
 
 ExportDialogSections = {}
+
+local function makeOutputDirPath(propertyTable)
+	local outputPath = nil
+	local pt = propertyTable
+	if (notEmpty(pt.WX_exportPrefix) 
+		and validImageAndAlbumTypes(pt.imageType, pt.albumType)
+		and notEmpty(pt.slug)
+		and (pt.albumType)) then
+		if (pt.albumType == Constants.AlbumTypes.named_journal) and (notEmpty(pt.WX_albumName)) then
+			outputPath = pt.WA_outputPrefix .."/content/".. pt.slug .. "/" .. pt.albumName .."/".. Constants.ImageType.toString(pt.imageType)
+		elseif (pt.albumType == Constants.AlbumTypes.journal) then
+			outputPath = pt.WA_outputPrefix .."/content/".. pt.slug .. "/" .. Constants.ImageType.toString(pt.imageType)
+		elseif (pt.albumType == Constants.AlbumTypes.photo) then
+			outputPath = pt.WA_outputPrefix .."/photos/galleries/".. pt.slug .. "/" .. Constants.ImageType.toString(pt.imageType)
+		else
+			outputPath = nil
+		end
+	end
+	propertyTable.fullOutputPath = outputPath
+end
 
 local function updateExportStatus( propertyTable )
 	
