@@ -21,7 +21,6 @@ return {
 	startDialog = ExportDialogSections.startDialog,
 	sectionsForTopOfDialog = ExportDialogSections.sectionsForTopOfDialog,
 	updateExportSettings = ExportDialogSections.updateExportSettings,
-	
 	processRenderedPhotos = ExportTask.processRenderedPhotos,
 	
 }
