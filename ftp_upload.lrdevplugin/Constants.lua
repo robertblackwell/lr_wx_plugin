@@ -12,4 +12,9 @@ Constants.ImageTypes.toString = function(s)
     end
 end
 Constants.AlbumTypes = {journal = "journal", named_journal = "named_journal", photo = "photo"}
+Constants.AlbumTypes.defaultValue = function() 
+    return Constants.AlbumTypes.journal 
+end
+Constants.default_slug_value = "DEFAULT_SLUG"
+Constants.default_journal_album_name = "DEFAULT_NAME"
 return Constants

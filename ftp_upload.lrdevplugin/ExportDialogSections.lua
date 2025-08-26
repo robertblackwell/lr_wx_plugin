@@ -35,33 +35,42 @@ local function makeOutputDirPath(propertyTable)
 	end
 	propertyTable.fullOutputPath = outputPath
 end
+local function setError(propertyTable, message)
+	if message then
+		propertyTable.message = message
+		propertyTable.hasError = true
+		propertyTable.hasNoError = false
+		propertyTable.LR_cantExportBecause = message
+	else
+		propertyTable.message = nil
+		propertyTable.hasError = false
+		propertyTable.hasNoError = true
+		propertyTable.LR_cantExportBecause = nil
+	end
 
-local function updateExportStatus( propertyTable )
+end
+local function updateExportParams( propertyTable )
 	
 	local message = nil
 	
 	repeat
-		-- Use a repeat loop to allow easy way to "break" out.
-		-- (It only goes through once.)
-		
-		if propertyTable.ftpPreset == nil then
-			message = LOC "$$$/FtpUpload/ExportDialog/Messages/SelectPreset=Select or Create an FTP preset"
+		propertyTable.WX_require_album_name_field = (propertyTable.WX_albumType == Constants.AlbumTypes.named_journal)
+		if isEmpty(propertyTable.WX_slug) then
+			propertyTable.WX_slug = Constants.default_slug_value
+			setError(propertyTable, "The Slug field MUST have a value")
 			break
 		end
-		
-		if propertyTable.putInSubfolder and ( propertyTable.path == "" or propertyTable.path == nil ) then
-			message = LOC "$$$/FtpUpload/ExportDialog/Messages/EnterSubPath=Enter a destination path"
+		if isEmpty(propertyTable.WX_journal_album_name) then
+			propertyTable.WX_journal_album_name = Constants.default_journal_album_name
+			setError(propertyTable, "The Slug field MUST have a value")
 			break
 		end
-		
-		local fullPath = propertyTable.ftpPreset.path or ""
-		
-		if propertyTable.putInSubfolder then
-			fullPath = LrFtp.appendFtpPaths( fullPath, propertyTable.path )
+		local output_dir = makeOutputDirPath(propertyTable)
+		if(output_dir == nil) then
+			setError(propertyTable, "Form is not completed satisfactorially")
+		else
+			setError(propertyTable, nil)
 		end
-		
-		propertyTable.fullPath = fullPath
-		
 	until true
 	
 	if message then
@@ -83,22 +92,22 @@ end
 function ExportDialogSections.startDialog( propertyTable )
 	PrintUtils.message('startDialog')
 
-	propertyTable:addObserver( 'WX_exportPrefix', updateExportStatus )
-	propertyTable:addObserver( 'WX_exportFolder', updateExportStatus )
-	propertyTable:addObserver( 'WX_synopsis', updateExportStatus )
-	propertyTable:addObserver( 'WX_albumType', updateExportStatus )
-	propertyTable:addObserver( 'WX_imageType', updateExportStatus )
-	propertyTable:addObserver( 'WX_slug', updateExportStatus )
-	propertyTable:addObserver( 'WX_journal_album_name', updateExportStatus )
+	propertyTable:addObserver( 'WX_exportPrefix', updateExportParams )
+	propertyTable:addObserver( 'WX_exportFolder', updateExportParams )
+	propertyTable:addObserver( 'WX_synopsis', updateExportParams )
+	propertyTable:addObserver( 'WX_albumType', updateExportParams )
+	propertyTable:addObserver( 'WX_imageType', updateExportParams )
+	propertyTable:addObserver( 'WX_slug', updateExportParams )
+	propertyTable:addObserver( 'WX_journal_album_name', updateExportParams )
 
 
 	-- below here are hangovers from the ftp plugin that was modified to get the whiteacorn plugin
-	propertyTable:addObserver( 'items', updateExportStatus )
-	propertyTable:addObserver( 'path', updateExportStatus )
-	propertyTable:addObserver( 'putInSubfolder', updateExportStatus )
-	propertyTable:addObserver( 'ftpPreset', updateExportStatus )
+	propertyTable:addObserver( 'items', updateExportParams )
+	propertyTable:addObserver( 'path', updateExportParams )
+	propertyTable:addObserver( 'putInSubfolder', updateExportParams )
+	propertyTable:addObserver( 'ftpPreset', updateExportParams )
 
-	updateExportStatus( propertyTable )
+	updateExportParams( propertyTable )
 	
 end
 

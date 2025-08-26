@@ -14,8 +14,11 @@ return {
 		{ key = 'WX_synopsis', default = 'Export photo albums for whiteacorn.com website'},
 		{ key = 'WX_albumType', default = Constants.AlbumTypes.journal },
 		{ key = 'WX_imageType', default = Constants.ImageTypes.large},
-		{ key = 'WX_slug', default = nil},
-		{ key = 'WX_journal_album_name', default = nil},
+		{ key = 'WX_slug', default = "SLUG"},
+		{ key = 'WX_journal_album_name', default = Constants.default_journal_album_name},
+
+		-- derived export parameters
+		{ key = 'WX_require_album_name_field', default = false},
 
 		{ key = 'putInSubfolder', default = false },
 		{ key = 'path', default = 'photos' },
