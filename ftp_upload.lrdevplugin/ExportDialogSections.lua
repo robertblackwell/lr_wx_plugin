@@ -29,32 +29,14 @@ local function makeOutputDirPath(propertyTable)
 		and validImageAndAlbumTypes(pt.WX_imageType, pt.WX_albumType)
 		and notEmpty(pt.WX_slug)) then
 
-		-- if pt.WX_albumType == Constants.AlbumTypes.photo then
-		-- 	Utils.message("WX_albumType is equal to Constants.AlbumTypes.photo")
-		-- end
-
-		-- Utils.message("Outter then WX_albumType: " .. pt.WX_albumType .. " WX_imageType: " .. pt.WX_imageType .. " " .. Constants.AlbumTypes.photo)
-
 		if (pt.WX_albumType == Constants.AlbumTypes.named_journal) and (notEmpty(pt.WX_journal_album_name)) then
-			-- Utils.message("Leg 1 jounal named") 
-			-- outputPath = "step 1" --pt.WX_exportPrefix .."/content/".. pt.WX_slug .. "/" .. pt.WX_journal_album_name .."/".. Constants.ImageTypes.toString(pt.WX_imageType)
 			outputPath = pathJoin(pt.WX_exportPrefix, "content", pt.WX_slug, pt.WX_journal_album_name, Constants.ImageTypes.toString(pt.WX_imageType))
-			-- Utils.message("Leg 1 outputPath: ") 
 		elseif (pt.WX_albumType == Constants.AlbumTypes.journal) then
-			-- Utils.message("Leg 2 jounal not named")
-			-- outputPath = "step 2" -- pt.WX_exportPrefix .."/content/".. pt.WX_slug .. "/" .. Constants.ImageTypes.toString(pt.WX_imageType)
 			outputPath = pathJoin(pt.WX_exportPrefix, "content", pt.WX_slug, Constants.ImageTypes.toString(pt.WX_imageType))
-			-- Utils.message("Leg 2 outputPath: ") 
 		elseif (pt.WX_albumType == Constants.AlbumTypes.photo) and (pt.WX_imageType == Constants.ImageTypes.mascot) then
-			-- Utils.message("Leg 3 photo album mascot outputPath: ") 
-			-- outputPath = "step 3" -- pt.WX_exportPrefix .."/photos/galleries/".. pt.WX_slug 
 			outputPath = pathJoin(pt.WX_exportPrefix, "photos", "galleries", pt.WX_slug)
-			-- Utils.message("Leg 3 outputPath: " .. outputPath)
 		elseif (pt.WX_albumType == Constants.AlbumTypes.photo) then
-			-- Utils.message("Leg 4 photo album not mascot outputPath: ") 
-			-- outputPath = pt.WX_exportPrefix .."/photos/galleries/".. pt.WX_slug .. "/" .. Constants.ImageTypes.toString(pt.WX_imageType)
 			outputPath = pathJoin(pt.WX_exportPrefix, "photos", "galleries", pt.WX_slug, Constants.ImageTypes.toString(pt.WX_imageType))
-			-- Utils.message("Leg 4 outputPath: ")
 		else
 			Utils.message("Leg 4") 
 			outputPath = nil
@@ -64,7 +46,6 @@ local function makeOutputDirPath(propertyTable)
 	end
 	Utils.message("makeOutputDir return value: " .. outputPath)
 	return outputPath
-	-- propertyTable.fullOutputPath = outputPath
 end
 local function setError(propertyTable, message)
 	if message then
@@ -136,10 +117,10 @@ function ExportDialogSections.startDialog( propertyTable )
 
 
 	-- below here are hangovers from the ftp plugin that was modified to get the whiteacorn plugin
-	propertyTable:addObserver( 'items', updateExportParams )
-	propertyTable:addObserver( 'path', updateExportParams )
-	propertyTable:addObserver( 'putInSubfolder', updateExportParams )
-	propertyTable:addObserver( 'ftpPreset', updateExportParams )
+	-- propertyTable:addObserver( 'items', updateExportParams )
+	-- propertyTable:addObserver( 'path', updateExportParams )
+	-- propertyTable:addObserver( 'putInSubfolder', updateExportParams )
+	-- propertyTable:addObserver( 'ftpPreset', updateExportParams )
 
 	updateExportParams( propertyTable )
 	

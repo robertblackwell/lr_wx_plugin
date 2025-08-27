@@ -12,7 +12,7 @@ function ExportTask.processRenderedPhotos( functionContext, exportContext )
 	local exportSession = exportContext.exportSession
 	local exportParams = exportContext.propertyTable
 	local ftpPreset = exportParams.ftpPreset
-	Utils.dumpTable(exportParams, 4)
+	-- Utils.dumpTable(exportParams, 4)
 	-- Set progress title.
 
 	local nPhotos = exportSession:countRenditions()
