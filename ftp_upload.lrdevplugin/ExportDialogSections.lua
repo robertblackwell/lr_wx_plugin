@@ -20,15 +20,14 @@ local function makeOutputDirPath(propertyTable)
 	local outputPath = nil
 	local pt = propertyTable
 	if (notEmpty(pt.WX_exportPrefix) 
-		and validImageAndAlbumTypes(pt.imageType, pt.albumType)
-		and notEmpty(pt.slug)
-		and (pt.albumType)) then
-		if (pt.albumType == Constants.AlbumTypes.named_journal) and (notEmpty(pt.WX_albumName)) then
-			outputPath = pt.WA_outputPrefix .."/content/".. pt.slug .. "/" .. pt.albumName .."/".. Constants.ImageType.toString(pt.imageType)
-		elseif (pt.albumType == Constants.AlbumTypes.journal) then
-			outputPath = pt.WA_outputPrefix .."/content/".. pt.slug .. "/" .. Constants.ImageType.toString(pt.imageType)
-		elseif (pt.albumType == Constants.AlbumTypes.photo) then
-			outputPath = pt.WA_outputPrefix .."/photos/galleries/".. pt.slug .. "/" .. Constants.ImageType.toString(pt.imageType)
+		and validImageAndAlbumTypes(pt.WX_imageType, pt.WX_albumType)
+		and notEmpty(pt.WX_slug)) then
+		if (pt.WX_albumType == Constants.AlbumTypes.named_journal) and (notEmpty(pt.WX_journal_album_name)) then
+			outputPath = pt.WA_outputPrefix .."/content/".. pt.WX_slug .. "/" .. pt.WX_journal_album_name .."/".. Constants.ImageType.toString(pt.WX_imageType)
+		elseif (pt.WX_albumType == Constants.AlbumTypes.journal) then
+			outputPath = pt.WA_outputPrefix .."/content/".. pt.WX_slug .. "/" .. Constants.ImageType.toString(pt.WX_imageType)
+		elseif (pt.WX_albumType == Constants.AlbumTypes.photo) then
+			outputPath = pt.WA_outputPrefix .."/photos/galleries/".. pt.WX_slug .. "/" .. Constants.ImageType.toString(pt.WX_imageType)
 		else
 			outputPath = nil
 		end
