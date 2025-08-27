@@ -19,6 +19,8 @@ return {
 
 		-- derived export parameters
 		{ key = 'WX_require_album_name_field', default = false},
+		{ key = 'WX_is_journal', default = true},
+		{ key = 'WX_is_not_journal', default = false},
 
 		{ key = 'putInSubfolder', default = false },
 		{ key = 'path', default = 'photos' },

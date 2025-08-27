@@ -55,6 +55,8 @@ local function updateExportParams( propertyTable )
 	
 	repeat
 		propertyTable.WX_require_album_name_field = (propertyTable.WX_albumType == Constants.AlbumTypes.named_journal)
+		propertyTable.WX_is_journal = (propertyTable.WX_albumType == Constants.AlbumTypes.named_journal) or (propertyTable.WX_albumType == Constants.AlbumTypes.journal)
+		propertyTable.WX_is_not_journal = not propertyTable.WX_is_journal
 		if isEmpty(propertyTable.WX_slug) then
 			propertyTable.WX_slug = Constants.default_slug_value
 			setError(propertyTable, "The Slug field MUST have a value")
