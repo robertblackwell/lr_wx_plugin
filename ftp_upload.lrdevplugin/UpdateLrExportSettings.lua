@@ -1,9 +1,9 @@
-require "PrintUtils"
+require "Utils"
 
 UpdateLrExportSettings = {}
 
 function UpdateLrExportSettings.update(propertyTable)
-	PrintUtils.message('updateExportSettings')
+	Utils.message('updateExportSettings')
 	propertyTable.LR_export_colorSpace = "AdobeRGB"
 	propertyTable.LR_jpeg_quality = 0.90
 	propertyTable.LR_format = "JPEG"

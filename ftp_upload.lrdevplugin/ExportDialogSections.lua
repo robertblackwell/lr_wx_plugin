@@ -1,5 +1,6 @@
 
 require 'Constants'
+require "Utils"
 
 local LrView = import 'LrView'
 local LrFtp = import 'LrFtp'
@@ -12,15 +13,13 @@ local function notEmpty(value)
 end
 
 local function validImageAndAlbumTypes(imageType, albumType)
-	-- PrintUtils.message("validImageAndAlbumType imageType: " .. imageType .. " albumType: " .. albumType)
+	-- Utils.message("validImageAndAlbumType imageType: " .. imageType .. " albumType: " .. albumType)
 	if (imageType == Constants.ImageTypes.mascot) and (albumType ~= Constants.AlbumTypes.photo) then
 		return false
 	end
 	return true
 end
-local function pathJoin(...)
-	return table.concat({...}, '/')
-end
+local pathJoin = Utils.pathJoin
 ExportDialogSections = {}
 
 local function makeOutputDirPath(propertyTable)
@@ -31,39 +30,39 @@ local function makeOutputDirPath(propertyTable)
 		and notEmpty(pt.WX_slug)) then
 
 		-- if pt.WX_albumType == Constants.AlbumTypes.photo then
-		-- 	PrintUtils.message("WX_albumType is equal to Constants.AlbumTypes.photo")
+		-- 	Utils.message("WX_albumType is equal to Constants.AlbumTypes.photo")
 		-- end
 
-		-- PrintUtils.message("Outter then WX_albumType: " .. pt.WX_albumType .. " WX_imageType: " .. pt.WX_imageType .. " " .. Constants.AlbumTypes.photo)
+		-- Utils.message("Outter then WX_albumType: " .. pt.WX_albumType .. " WX_imageType: " .. pt.WX_imageType .. " " .. Constants.AlbumTypes.photo)
 
 		if (pt.WX_albumType == Constants.AlbumTypes.named_journal) and (notEmpty(pt.WX_journal_album_name)) then
-			-- PrintUtils.message("Leg 1 jounal named") 
+			-- Utils.message("Leg 1 jounal named") 
 			-- outputPath = "step 1" --pt.WX_exportPrefix .."/content/".. pt.WX_slug .. "/" .. pt.WX_journal_album_name .."/".. Constants.ImageTypes.toString(pt.WX_imageType)
 			outputPath = pathJoin(pt.WX_exportPrefix, "content", pt.WX_slug, pt.WX_journal_album_name, Constants.ImageTypes.toString(pt.WX_imageType))
-			-- PrintUtils.message("Leg 1 outputPath: ") 
+			-- Utils.message("Leg 1 outputPath: ") 
 		elseif (pt.WX_albumType == Constants.AlbumTypes.journal) then
-			-- PrintUtils.message("Leg 2 jounal not named")
+			-- Utils.message("Leg 2 jounal not named")
 			-- outputPath = "step 2" -- pt.WX_exportPrefix .."/content/".. pt.WX_slug .. "/" .. Constants.ImageTypes.toString(pt.WX_imageType)
 			outputPath = pathJoin(pt.WX_exportPrefix, "content", pt.WX_slug, Constants.ImageTypes.toString(pt.WX_imageType))
-			-- PrintUtils.message("Leg 2 outputPath: ") 
+			-- Utils.message("Leg 2 outputPath: ") 
 		elseif (pt.WX_albumType == Constants.AlbumTypes.photo) and (pt.WX_imageType == Constants.ImageTypes.mascot) then
-			-- PrintUtils.message("Leg 3 photo album mascot outputPath: ") 
+			-- Utils.message("Leg 3 photo album mascot outputPath: ") 
 			-- outputPath = "step 3" -- pt.WX_exportPrefix .."/photos/galleries/".. pt.WX_slug 
 			outputPath = pathJoin(pt.WX_exportPrefix, "photos", "galleries", pt.WX_slug)
-			-- PrintUtils.message("Leg 3 outputPath: " .. outputPath)
+			-- Utils.message("Leg 3 outputPath: " .. outputPath)
 		elseif (pt.WX_albumType == Constants.AlbumTypes.photo) then
-			-- PrintUtils.message("Leg 4 photo album not mascot outputPath: ") 
+			-- Utils.message("Leg 4 photo album not mascot outputPath: ") 
 			-- outputPath = pt.WX_exportPrefix .."/photos/galleries/".. pt.WX_slug .. "/" .. Constants.ImageTypes.toString(pt.WX_imageType)
 			outputPath = pathJoin(pt.WX_exportPrefix, "photos", "galleries", pt.WX_slug, Constants.ImageTypes.toString(pt.WX_imageType))
-			-- PrintUtils.message("Leg 4 outputPath: ")
+			-- Utils.message("Leg 4 outputPath: ")
 		else
-			PrintUtils.message("Leg 4") 
+			Utils.message("Leg 4") 
 			outputPath = nil
 		end
 	else
-		PrintUtils.message("Outter else")
+		Utils.message("Outter else")
 	end
-	PrintUtils.message("makeOutputDir return value: " .. outputPath)
+	Utils.message("makeOutputDir return value: " .. outputPath)
 	return outputPath
 	-- propertyTable.fullOutputPath = outputPath
 end
@@ -125,7 +124,7 @@ end
 -------------------------------------------------------------------------------
 
 function ExportDialogSections.startDialog( propertyTable )
-	PrintUtils.message('startDialog')
+	Utils.message('startDialog')
 
 	propertyTable:addObserver( 'WX_exportPrefix', updateExportParams )
 	propertyTable:addObserver( 'WX_exportFolder', updateExportParams )
