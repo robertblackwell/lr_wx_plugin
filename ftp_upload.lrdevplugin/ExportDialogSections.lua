@@ -12,8 +12,15 @@ local function notEmpty(value)
 end
 
 local function validImageAndAlbumTypes(imageType, albumType)
+	PrintUtils.message("validImageAndAlbumType imageType: " .. imageType .. " albumType: " .. albumType)
+	if (imageType == Constants.ImageTypes.mascot) and (albumType ~= Constants.AlbumTypes.photo) then
+		return false
+	end
+	return true
 end
-
+local function pathJoin(...)
+	return table.concat({...}, '/')
+end
 ExportDialogSections = {}
 
 local function makeOutputDirPath(propertyTable)
@@ -22,17 +29,43 @@ local function makeOutputDirPath(propertyTable)
 	if (notEmpty(pt.WX_exportPrefix) 
 		and validImageAndAlbumTypes(pt.WX_imageType, pt.WX_albumType)
 		and notEmpty(pt.WX_slug)) then
+
+		-- if pt.WX_albumType == Constants.AlbumTypes.photo then
+		-- 	PrintUtils.message("WX_albumType is equal to Constants.AlbumTypes.photo")
+		-- end
+
+		-- PrintUtils.message("Outter then WX_albumType: " .. pt.WX_albumType .. " WX_imageType: " .. pt.WX_imageType .. " " .. Constants.AlbumTypes.photo)
+
 		if (pt.WX_albumType == Constants.AlbumTypes.named_journal) and (notEmpty(pt.WX_journal_album_name)) then
-			outputPath = pt.WA_outputPrefix .."/content/".. pt.WX_slug .. "/" .. pt.WX_journal_album_name .."/".. Constants.ImageType.toString(pt.WX_imageType)
+			-- PrintUtils.message("Leg 1 jounal named") 
+			-- outputPath = "step 1" --pt.WX_exportPrefix .."/content/".. pt.WX_slug .. "/" .. pt.WX_journal_album_name .."/".. Constants.ImageTypes.toString(pt.WX_imageType)
+			outputPath = pathJoin(pt.WX_exportPrefix, "content", pt.WX_slug, pt.WX_journal_album_name, Constants.ImageTypes.toString(pt.WX_imageType))
+			-- PrintUtils.message("Leg 1 outputPath: ") 
 		elseif (pt.WX_albumType == Constants.AlbumTypes.journal) then
-			outputPath = pt.WA_outputPrefix .."/content/".. pt.WX_slug .. "/" .. Constants.ImageType.toString(pt.WX_imageType)
+			-- PrintUtils.message("Leg 2 jounal not named")
+			-- outputPath = "step 2" -- pt.WX_exportPrefix .."/content/".. pt.WX_slug .. "/" .. Constants.ImageTypes.toString(pt.WX_imageType)
+			outputPath = pathJoin(pt.WX_exportPrefix, "content", pt.WX_slug, Constants.ImageTypes.toString(pt.WX_imageType))
+			-- PrintUtils.message("Leg 2 outputPath: ") 
+		elseif (pt.WX_albumType == Constants.AlbumTypes.photo) and (pt.WX_imageType == Constants.ImageTypes.mascot) then
+			-- PrintUtils.message("Leg 3 photo album mascot outputPath: ") 
+			-- outputPath = "step 3" -- pt.WX_exportPrefix .."/photos/galleries/".. pt.WX_slug 
+			outputPath = pathJoin(pt.WX_exportPrefix, "photos", "galleries", pt.WX_slug)
+			-- PrintUtils.message("Leg 3 outputPath: " .. outputPath)
 		elseif (pt.WX_albumType == Constants.AlbumTypes.photo) then
-			outputPath = pt.WA_outputPrefix .."/photos/galleries/".. pt.WX_slug .. "/" .. Constants.ImageType.toString(pt.WX_imageType)
+			-- PrintUtils.message("Leg 4 photo album not mascot outputPath: ") 
+			-- outputPath = pt.WX_exportPrefix .."/photos/galleries/".. pt.WX_slug .. "/" .. Constants.ImageTypes.toString(pt.WX_imageType)
+			outputPath = pathJoin(pt.WX_exportPrefix, "photos", "galleries", pt.WX_slug, Constants.ImageTypes.toString(pt.WX_imageType))
+			-- PrintUtils.message("Leg 4 outputPath: ")
 		else
+			PrintUtils.message("Leg 4") 
 			outputPath = nil
 		end
+	else
+		PrintUtils.message("Outter else")
 	end
-	propertyTable.fullOutputPath = outputPath
+	PrintUtils.message("makeOutputDir return value: " .. outputPath)
+	return outputPath
+	-- propertyTable.fullOutputPath = outputPath
 end
 local function setError(propertyTable, message)
 	if message then
@@ -71,6 +104,7 @@ local function updateExportParams( propertyTable )
 			setError(propertyTable, "Form is not completed satisfactorially")
 		else
 			setError(propertyTable, nil)
+			propertyTable.WX_outputDir = output_dir
 		end
 	until true
 	
@@ -237,7 +271,7 @@ function ExportDialogSections.sectionsForTopOfDialog( _, propertyTable )
 					width = share 'labelWidth'
 				},
 				f:edit_field {
-					value = bind 'WX_fullOutputPath',
+					value = bind 'WX_outputDir',
 					width = 200,
 					-- enabled = bind 'putInSubfolder',
 					-- validate = LrFtp.ftpPathValidator,

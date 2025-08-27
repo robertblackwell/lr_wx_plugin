@@ -3,7 +3,7 @@ Constants.ImageTypes = {large = "large_images", thumbnails = "thumbnails", masco
 Constants.ImageTypes.toString = function(s) 
     if s == Constants.ImageTypes.large then
         return "Images" 
-    elseif s == Constants.Imagetypes.thumbnails then 
+    elseif s == Constants.ImageTypes.thumbnails then 
         return "Thumbnails"
     elseif s == Constants.ImageTypes.mascot then
         return "mascot.jpg"
