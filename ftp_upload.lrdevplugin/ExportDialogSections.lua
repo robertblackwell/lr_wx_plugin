@@ -120,48 +120,137 @@ function ExportDialogSections.sectionsForTopOfDialog( _, propertyTable )
 	local share = LrView.share
 
 	local result = {
-	
 		{
-			title = "Whiteacorn Export",
-			
+			title = "Whiteacorn Export",	
 			synopsis = bind { key = 'WX_synopsis', object = propertyTable },
-			
 			f:row {
 				f:static_text {
-					title = LOC "$$$/FtpUpload/ExportDialog/Destination=Destination:",
+					title = "Output Root ",
 					alignment = 'right',
 					width = share 'labelWidth'
 				},
-	
-				LrFtp.makeFtpPresetPopup {
-					factory = f,
-					properties = propertyTable,
-					valueBinding = 'ftpPreset',
-					itemsBinding = 'items',
+				f:edit_field {
+					value = bind 'WX_exportPrefix',
+					width = 200,
+					-- enabled = bind 'putInSubfolder',
+					-- validate = LrFtp.ftpPathValidator,
+					-- truncation = 'middle',
+					-- immediate = true,
 					fill_horizontal = 1,
 				},
 			},
-
 			f:row {
-				f:spacer {
+				f:static_text {
+					title = "Type of Album ",
+					alignment = 'right',
 					width = share 'labelWidth'
 				},
-	
-				f:checkbox {
-					title = LOC "$$$/FtpUpload/ExportDialog/PutInSubfolder=Put in Subfolder:",
-					value = bind 'putInSubfolder',
+				f:popup_menu {
+					value = bind 'WX_albumType',
+					width = 300,
+					items = {
+						{ value = Constants.AlbumTypes.journal, title = "Journal" },
+						{ value = Constants.AlbumTypes.named_journal, title = "Named Journal" },
+						{ value = Constants.AlbumTypes.photo, title = "Photo Album" },
+					},
 				},
-
+			},
+			f:row {
+				f:static_text {
+					title = "Slug ",
+					alignment = 'right',
+					width = share 'labelWidth'
+				},
 				f:edit_field {
-					value = bind 'path',
-					enabled = bind 'putInSubfolder',
-					validate = LrFtp.ftpPathValidator,
-					truncation = 'middle',
-					immediate = true,
+					value = bind 'WX_slug',
+					width = 200,
+					-- enabled = bind 'putInSubfolder',
+					-- validate = LrFtp.ftpPathValidator,
+					-- truncation = 'middle',
+					-- immediate = true,
 					fill_horizontal = 1,
 				},
 			},
-			
+			f:row {
+				f:static_text {
+					title = "If checked enter an album name ",
+					alignment = 'right',
+					width = share 'labelWidth',
+					enabled = bind 'WX_require_album_name_field'
+				},
+				f:edit_field {
+					value = bind 'WX_journal_album_name',
+					width = 200,
+					enabled = bind 'WX_require_album_name_field',
+					-- validate = LrFtp.ftpPathValidator,
+					-- truncation = 'middle',
+					-- immediate = true,
+					fill_horizontal = 1,
+				},
+				f:spacer {
+					width = 5,
+					enabled = bind 'WX_require_album_name_field',
+				},
+			},
+			f:row {
+				visible = bind 'WX_is_not_journal',
+				f:static_text {
+					title = "Select Type of Image ",
+					alignment = 'right',
+					width = share 'labelWidth',
+					visible = bind 'WX_is_not_journal',
+				},
+				f:popup_menu {
+					value = bind 'WX_imageType',
+					width = 300,
+					-- enabled = bind 'WX_is_not_journal',
+					visible = bind 'WX_is_not_journal',
+					items = {
+						{ value = Constants.ImageTypes.large, title = "Large Images" },
+						{ value = Constants.ImageTypes.thumbnails, title = "Thumbnails" },
+						{ value = 'mascot', title = "Mascot" },
+					},
+				},
+			},
+			f:row {
+				visible = bind 'WX_is_journal',
+				f:static_text {
+					title = "Select Type of Image ",
+					alignment = 'right',
+					width = share 'labelWidth',
+					visible = bind 'WX_is_journal',
+				},
+				f:popup_menu {
+					value = bind 'WX_imageType',
+					width = 300,
+					-- enabled = bind 'WX_is_journal',
+					visible = bind 'WX_is_journal',
+					items = {
+						{ value = Constants.ImageTypes.large, title = "Large Images" },
+						{ value = Constants.ImageTypes.thumbnails, title = "Thumbnails" },
+					},
+				},
+			},
+			f:row {
+				f:static_text {
+					title = "Full output path ",
+					alignment = 'right',
+					width = share 'labelWidth'
+				},
+				f:edit_field {
+					value = bind 'WX_fullOutputPath',
+					width = 200,
+					-- enabled = bind 'putInSubfolder',
+					-- validate = LrFtp.ftpPathValidator,
+					-- truncation = 'middle',
+					-- immediate = true,
+					fill_horizontal = 1,
+				},
+				f:spacer {
+					width = 5
+				},
+			},
+
 			f:column {
 				place = 'overlapping',
 				fill_horizontal = 1,
