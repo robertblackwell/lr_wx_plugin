@@ -38,13 +38,13 @@ local function makeOutputDirPath(propertyTable)
 		elseif (pt.WX_albumType == Constants.AlbumTypes.photo) then
 			outputPath = pathJoin(pt.WX_exportPrefix, "photos", "galleries", pt.WX_slug, Constants.ImageTypes.toString(pt.WX_imageType))
 		else
-			Utils.message("Leg 4") 
+			-- Utils.message("Leg 4") 
 			outputPath = nil
 		end
 	else
-		Utils.message("Outter else")
+		-- Utils.message("Outter else")
 	end
-	Utils.message("makeOutputDir return value: " .. outputPath)
+	-- Utils.message("makeOutputDir return value: " .. outputPath)
 	return outputPath
 end
 local function setError(propertyTable, message)
@@ -105,8 +105,6 @@ end
 -------------------------------------------------------------------------------
 
 function ExportDialogSections.startDialog( propertyTable )
-	Utils.message('startDialog')
-
 	propertyTable:addObserver( 'WX_exportPrefix', updateExportParams )
 	propertyTable:addObserver( 'WX_exportFolder', updateExportParams )
 	propertyTable:addObserver( 'WX_synopsis', updateExportParams )
@@ -114,16 +112,7 @@ function ExportDialogSections.startDialog( propertyTable )
 	propertyTable:addObserver( 'WX_imageType', updateExportParams )
 	propertyTable:addObserver( 'WX_slug', updateExportParams )
 	propertyTable:addObserver( 'WX_journal_album_name', updateExportParams )
-
-
-	-- below here are hangovers from the ftp plugin that was modified to get the whiteacorn plugin
-	-- propertyTable:addObserver( 'items', updateExportParams )
-	-- propertyTable:addObserver( 'path', updateExportParams )
-	-- propertyTable:addObserver( 'putInSubfolder', updateExportParams )
-	-- propertyTable:addObserver( 'ftpPreset', updateExportParams )
-
 	updateExportParams( propertyTable )
-	
 end
 
 function ExportDialogSections.sectionsForTopOfDialog( _, propertyTable )
