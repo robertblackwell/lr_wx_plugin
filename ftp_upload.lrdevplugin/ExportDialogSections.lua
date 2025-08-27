@@ -12,7 +12,7 @@ local function notEmpty(value)
 end
 
 local function validImageAndAlbumTypes(imageType, albumType)
-	PrintUtils.message("validImageAndAlbumType imageType: " .. imageType .. " albumType: " .. albumType)
+	-- PrintUtils.message("validImageAndAlbumType imageType: " .. imageType .. " albumType: " .. albumType)
 	if (imageType == Constants.ImageTypes.mascot) and (albumType ~= Constants.AlbumTypes.photo) then
 		return false
 	end

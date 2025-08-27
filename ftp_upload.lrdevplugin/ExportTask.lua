@@ -17,14 +17,12 @@ function ExportTask.processRenderedPhotos( functionContext, exportContext )
 
 	local nPhotos = exportSession:countRenditions()
 
-	local progressScope = exportContext:configureProgress {
-						title = nPhotos > 1
-							   and LOC( "$$$/FtpUpload/Upload/Progress=Uploading ^1 photos via Ftp", nPhotos )
-							   or LOC "$$$/FtpUpload/Upload/Progress/One=Uploading one photo via Ftp",
-					}
+	local configTitle = string.format("Exporting %d photos for Whiteacorn into %s", nPhotos, exportParams.WX_outputDir)
+	local progressScope = exportContext:configureProgress {title = configTitle}
 	
 	local failures = {}
-	local destParentPath = LrPathUtils.child(exportParams.WX_exportPrefix, exportParams.WX_exportFolder)
+	-- local destParentPath = LrPathUtils.child(exportParams.WX_exportPrefix, exportParams.WX_exportFolder)
+	local destParentPath = exportParams.WX_outputDir 
 	if not LrFileUtils.exists(destParentPath) then
 		LrFileUtils.createAllDirectories(destParentPath)
 	end

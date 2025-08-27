@@ -7,6 +7,10 @@ PrintUtils = {}
 function PrintUtils.init()
 
 end
+function PrintUtils.pathJoin(...)
+	return table.concat({...}, '/')
+end
+
 function PrintUtils.message(msg)
     logger:info(msg)
 end
