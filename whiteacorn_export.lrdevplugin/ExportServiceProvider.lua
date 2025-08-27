@@ -4,10 +4,14 @@ require "UpdateLrExportSettings"
 require "Constants"
 
 return {
+	-- hide or restrict sections of the standard Lightroom export dialog
 	hideSections = { 'video', 'exportLocation', 'fileSettings', 'watermarking', 'metadata', 'outputSharpening', 'fileNaming', "imageSettings" },
 	allowFileFormats = {'JPEG'}, -- nil equates to all available formats
 	canExportVideo = false,
-	allowColorSpaces = {'AdobeRGB'}, -- nil equates to all color spaces
+	allowColorSpaces = {'AdobeRGB'}, -- nil equates to all color 
+	
+	-- define the keys that represent plugin parameters that will be used in an export operation
+	-- initiated by this plugin
 	exportPresetFields = {
 		{ key = 'WX_outputDir', default = nil},
 		{ key = 'WX_exportPrefix', default = '/Users/robertblackwell/LrPlugins/TestExports' },

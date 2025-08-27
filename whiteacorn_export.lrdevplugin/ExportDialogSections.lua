@@ -61,6 +61,11 @@ local function setError(propertyTable, message)
 	end
 
 end
+-- 
+-- This function is called whenever a datafield in the Top-Of-The-Export-Dialog is updated.
+-- Its job is to recalculate the values of plugin parameters; all the fields named WA_xxxxx in the properties
+-- table.
+-- 
 local function updateExportParams( propertyTable )
 	
 	local message = nil
@@ -102,8 +107,13 @@ local function updateExportParams( propertyTable )
 	
 end
 
--------------------------------------------------------------------------------
-
+-- 
+-- This function is the callback functions that are called by Lightroom 
+-- just before loading the export settings dialog form
+-- its function is to add observers for all of the plugin parameters
+-- most (but not all) of which can be updated by the form that will appear at the 
+-- top of the export dialog 
+-- 
 function ExportDialogSections.startDialog( propertyTable )
 	propertyTable:addObserver( 'WX_exportPrefix', updateExportParams )
 	propertyTable:addObserver( 'WX_exportFolder', updateExportParams )
@@ -115,6 +125,15 @@ function ExportDialogSections.startDialog( propertyTable )
 	updateExportParams( propertyTable )
 end
 
+-- 
+-- This function is called by Lightroom during the creation of the export dialog.
+-- The purpose of this function is to build a UI component in the top part of the
+-- export dialog.
+-- This function is only called once during the life of a single export dialog
+-- and this makes it a little difficult to build a UI component that is dynamic.
+-- The only tool I have found for doing this is the visible and enable attributes 
+-- of UI elements.
+-- 
 function ExportDialogSections.sectionsForTopOfDialog( _, propertyTable )
 
 	local f = LrView.osFactory()
