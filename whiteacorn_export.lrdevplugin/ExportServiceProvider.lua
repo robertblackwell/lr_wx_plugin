@@ -6,6 +6,7 @@ require "Constants"
 return {
 	-- hide or restrict sections of the standard Lightroom export dialog
 	hideSections = { 'video', 'exportLocation', 'fileSettings', 'watermarking', 'metadata', 'outputSharpening', 'fileNaming', "imageSettings" },
+	-- hideSections = { 'video', 'fileSettings', 'watermarking', 'metadata', 'outputSharpening', 'fileNaming', "imageSettings" },
 	allowFileFormats = {'JPEG'}, -- nil equates to all available formats
 	canExportVideo = false,
 	allowColorSpaces = {'AdobeRGB'}, -- nil equates to all color 
@@ -21,6 +22,7 @@ return {
 		{ key = 'WX_imageType', default = Constants.ImageTypes.large},
 		{ key = 'WX_slug', default = "SLUG"},
 		{ key = 'WX_journal_album_name', default = Constants.default_journal_album_name},
+		{ key = "WX_addToExisting", default = false},
 
 		-- derived export parameters
 		{ key = 'WX_require_album_name_field', default = false},

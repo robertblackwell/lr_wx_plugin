@@ -4,6 +4,7 @@ require "Utils"
 
 local LrView = import 'LrView'
 local LrFtp = import 'LrFtp'
+local LrDialogs = import "LrDialogs"
 
 local function isEmpty(value) 
 	return (value == nil or value == "")
@@ -159,6 +160,25 @@ function ExportDialogSections.sectionsForTopOfDialog( _, propertyTable )
 					-- immediate = true,
 					fill_horizontal = 1,
 				},
+				f:push_button {
+					title = "Choose",
+					value = "Choose",
+					width = 100,
+					action = function()
+						local d = LrDialogs.runOpenPanel {
+							title = "Dummy select prefix dir",
+							canChooseFile = false,
+							canChooseDirectories = true,
+							canCreateDirectories = true,
+							allowMultipleSelection = false,
+							initialDirectory = "/Volumes"
+						}
+						if (d ~= nil) and (type(d) == "table") and (#d > 0) then
+							LrDialogs.message("You selected " .. d[1])
+							propertyTable.WX_exportPrefix = d[1]
+						end
+					end
+				}
 			},
 			f:row {
 				f:static_text {
