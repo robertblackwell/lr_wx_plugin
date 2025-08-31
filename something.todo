@@ -1,2 +1,6 @@
 ☐ file selection for the export prefix
 ☐ allow more than 1 mascot, sequenctially number them
+
+whiteacorn_export_plugin:
+☐ in ExportSettings.lua pull all common settings initialization into a common function
+☐ remove the tracing dialog boxes and make log messages conditional

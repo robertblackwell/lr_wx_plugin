@@ -1,7 +1,9 @@
-# Lightroom Classic Export plugin
+# Lightroom Classic Export plugins
 
-This project is Lightroom Classic plugin in the form of an __Export Service Provider__ 
-to make it easier to export photos from LrClassic for one of my web sites.
+This project has 3 Lightroom Classic plugins whose purpose is to assist in the export 
+of photo albums for one of my web sites.
+
+## website background and objective
 
 The website in question is a blog and photos are used extensively in individual blog posts,
 and in addition the site includes photo galleries that are independent of posts.
@@ -31,3 +33,38 @@ for __thumbnails__ or __larger images__ and a small number of other things that 
 An additional wrinkle is that photo albums require a third type of image called a __mascot__ which is displayed as a 
 representative of a photo gallery on a page the presents all photo galleries. This image has sizing, format and naming requirements 
 that are different to __thumbnails__ or __larger_images__.
+
+## whiteacorn_export_service
+
+Based on what I read on the internet my first effort to build a lrplugin to meet my goals followed the 
+path of building a LrClassic Export Service Provider. That is the solution contained in the folder
+__whiteacorn_export_service.lrdevplugin__.
+
+It is invoked as part of the normal Lightroom export work flow.
+
+I was somewhat disatisfied with this solution as it required invoking the export process 2 times for a photo album without 
+a mascot photo and 3 times when mascots were involved. Thats because an Export Service Provider does the actual export processing
+"behind the scenes".
+
+## whiteacorn_export_plugin
+
+During my reading of the LrClassic SDK I came across LrExportSession which promised the possibility of having direct control
+over the export process; and so it turned out.
+
+This plugin adds an entry to the __File -> Plug-in Extras__ menu, shows a form to gather enough parameters to specify the
+export requirements of both large images and thumbnails and then exports both sets of images in a single step.
+
+For my purposes this is a much better solution.
+
+## export_dump_service
+
+The development of the previous 2 plugins require working out what properties and keys were present on the Lightroom export settings
+table and moreover what values those propserties had to have. To investigate that question I developed __export_dump_service/lrdevplugin__.
+This plugin, which follows the patter of a Lightroom Export Service Provider, lets you set the various sections 
+of the Export Dialog to whatever values you want and then dumps the export settings table to the file 
+
+```
+$HOME/Library/Logs/Lightroom/LrClassic/ExportDumpService.log 
+```
+
+Its a very useful tools for working oout how to programatically give the desired parameters to an export operation.
